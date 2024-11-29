@@ -1,0 +1,16 @@
+altair==5.4.1
+anyio==4.0.0
+argon2-cffi==21.1.0
+attrs==23.1.0
+beautifulsoup4==4.12.0
+bleach==4.1.0
+blinker==1.8.2
+cachetools==5.5.0
+click==8.1.7
+joblib==1.4.2
+numpy==2.1.2
+pandas==2.2.3
+scikit-learn==1.5.2
+seaborn==0.13.2
+streamlit==1.39.0
+tqdm==4.66.5

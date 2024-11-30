@@ -33,6 +33,8 @@ import requests
 import base64
 import pickle
 import numpy as np
+import operator # <-- Convenient item retrieval during iteration 
+import heapq 
 
 ##
 def content_generate_rating_estimate(title, user, rating_data, k=10, threshold=0.0):
@@ -143,17 +145,30 @@ def main():
     if selection == "Information":
         st.info("A collaborative and content-based recommender system for a collection of anime titles, capable of accurately predicting how a user will rate an anime title they have not yet viewed, based on their historical preferences")
         st.markdown("""
-            - Education
-            - Technology
-            - Business
-            - Entertainment 
-            - Sports
+            - Content Based Filtering: In Content-based filtering, we seek to make recommendations based on **how similar an item's properties or features are to those of other items.**
+            - Collaborative Based Filtering: In collaborative-based filtering, **we measure the similarity between users to make recommendations**
+
+            Performance metrics:
+
         """)
 
+        
+        perf = { 'Filter': ['Content Based', 'Collab Based'], 'RMSE': [0.69, 1.41], 'Time (sec)': [0.08, 2.05] } 
+        df = pd.DataFrame(perf) 
+        df.set_index('Filter', inplace=True)
+        # Display the DataFrame as a table
+        st.table(df)
+        
+        st.markdown("""
+         By far content based filter is the best in terms of execution time and accuracy.
+        """)
+
+
+    
     if selection == "Prediction":
         #st.image("https://github.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/blob/main/Streamlit/image.png", use_column_width=True)
 
-        st.info("Choose between using a content filter or colloborative filer - describe them and approximately how long it'll take to run")
+        #st.info("Choose between using a content filter or colloborative filer - describe them and approximately how long it'll take to run")
         
         # Creating a text box for user input
         option = st.radio( 'Select a filter:', ('Content Based Filtering', 'Collaborative Based Filtering') )

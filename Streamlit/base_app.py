@@ -153,7 +153,7 @@ def main():
     if selection == "Prediction":
         #st.image("https://github.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/blob/main/Streamlit/image.png", use_column_width=True)
 
-        st.info("Choose between using a content filter or colloborative filer - describe them")
+        st.info("Choose between using a content filter or colloborative filer - describe them and approximately how long it'll take to run")
         
         # Creating a text box for user input
         option = st.radio( 'Select a filter:', ('Content Based Filtering', 'Collaborative Based Filtering') )
@@ -182,10 +182,11 @@ def main():
             # Replace with your GitHub personal access token
             #token = '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'
   
-            return load_pickle_from_url(model_url, token)
+            return output #load_pickle_from_url(model_url, token)
 
         if st.button("Predict"):
             prediction = load_model(option)
+            st.success(f"User {user} will give the anime  {name} a rating of {np.round(prediction,2)}")
 
 
 

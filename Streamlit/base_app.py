@@ -110,21 +110,24 @@ def collab_generate_rating_estimate(book_title, user, k=20, threshold=0.0):
     return predicted_rating
 
 # Function to fetch and load a pickle file from a URL
-def load_pickle_from_url(url, token):
-    headers = {'Authorization': f'token {token}'}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        # Use BytesIO to treat the bytes response as a file-like object
-        return joblib.load(BytesIO(response.content))
-    else:
-        st.error(f"Error loading the file from URL: {url} (Status code: {response.status_code})")
-        return None
 
+
+def load_pickle_from_url(url):
+    response = requests.get(url) 
+    if response.status_code == 200: 
+        # Use BytesIO to treat the bytes response as a file-like object 
+        return joblib.load(BytesIO(response.content)) 
+    else:
+        st.error(f"Error loading the file from URL: {url} (Status code: {response.status_code})") 
+        return None
+        
+token = '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'
 indices = load_pickle_from_url('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/indices.pkl')
 util_matrix = load_pickle_from_url('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/util_matrix.pkl')
 user_sim_df = load_pickle_from_url('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/user_sim_df.pkl')
 sample = pd.read_csv('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/sample.csv')
 data = pd.read_csv('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/data.csv')
+cosine_sim_Tags = np.array(load_pickle_from_url('https://raw.githubusercontent.com/VuyiswaK/2401_PTDS-Unsupervised-Learning/main/Streamlit/cosine_sim_Tags.pkl'))
 
 # The main function where we will build the actual app
 def main():
@@ -174,27 +177,15 @@ def main():
                 output = content_generate_rating_estimate(title=name, user=user, rating_data=data)
             else:
                 # Load model 2
-                output = collab_generate_rating_estimate(title,name)
+                output = collab_generate_rating_estimate(name,user)
             
             # Replace with your GitHub personal access token
             #token = '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'
   
             return load_pickle_from_url(model_url, token)
-        
-        # Load the selected model
-        model = load_model(option)
-        
-        if model is not None:
-            st.write("Model loaded successfully!")
-        else:
-            st.write("Failed to load the model.")
-                        
-            
 
         if st.button("Predict"):
-            if model is not None:
-                prediction = model.predict([variables])
-                st.success(f"Text Category: {prediction}")
+            prediction = load_model(option)
 
 
 
